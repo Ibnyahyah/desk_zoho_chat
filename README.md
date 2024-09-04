@@ -4,7 +4,6 @@ A flutter implementation of desk.zoho.com In-app support. You need desk.zoho.com
 
 
 Screenshots
-![Screenshot_1624118447](https://user-images.githubusercontent.com/50879868/122739499-f4cf4700-d27a-11eb-8e12-1821dcf5bad3.png)
 
 
 ## Getting Started
