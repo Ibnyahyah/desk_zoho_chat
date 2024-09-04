@@ -1,10 +1,10 @@
 name: desk_zoho_chat
 description: Zoho Desk Flutter Package For In-app support.
-version: 0.0.1
+version: 1.0.0
 homepage: https://www.github.com/ibnyahyah/desk_zoho_chat
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.12.0 <4.0.0"
   flutter: ">=1.20.0"
 
 dependencies:

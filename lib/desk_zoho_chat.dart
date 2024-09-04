@@ -121,8 +121,8 @@ class _DeskZohoChatState extends State<DeskZohoChat> {
 
         // Simulate a click on the button if it exists
         if (chatButton) {
+           localStorage.setItem('buttonClicked', 'false');
             chatButton.click();
-            localStorage.setItem('buttonClicked', 'opened');
         }
     }
     // Add an event listener to try clicking the button every second until it succeeds
@@ -131,6 +131,7 @@ class _DeskZohoChatState extends State<DeskZohoChat> {
         // Clear the interval if the button was found and clicked
         if (document.querySelector('.zd_imc40443ffa5')) {
             clearInterval(intervalId);
+            localStorage.setItem('buttonClicked', 'opened');
         }
     }, 1000); // Check every 1 second
 """;
@@ -178,9 +179,12 @@ class _DeskZohoChatState extends State<DeskZohoChat> {
                              // Wait for the DOM to be fully loaded
                               document.addEventListener('click', function(event) {
                                   if (event.target.classList.contains('zd_imc40443ffa5')||event.target.classList.contains('zd_im3465592150')) {
+                                    console.log(localStorage.getItem('buttonClicked') === 'opened');
                                     if (localStorage.getItem('buttonClicked') === 'opened') {
-                                      window.flutter_inappwebview.callHandler('onChatButtonClick');
                                       localStorage.setItem('buttonClicked', 'false');
+                                      window.flutter_inappwebview.callHandler('onChatButtonClick');
+                                    }else{
+                                      localStorage.setItem('buttonClicked', 'opened');
                                     }
                                   }
                               });
