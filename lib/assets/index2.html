@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -6,6 +7,7 @@
       rel="stylesheet"
       type="text/css"
     />
+
     <style>
       body {
         font-family: "Roboto", arial, serif;
@@ -48,8 +50,9 @@
     <center>
       <div class="loader box-content"></div>
     </center>
-    <script>
-      // Initialize the ZOHOIM object if it doesn't already exist
+    <script type="text/javascript">
+      console.log("Start ---- index2.html");
+
       window.ZOHOIM =
         window.ZOHOIM ||
         function (a, b) {
@@ -58,17 +61,22 @@
 
       window.ZOHOIM.prefilledMessage = "";
 
-      (function () {
-        var d = document;
-        var s = d.createElement("script");
+      function initialize() {
+        var s = document.createElement("script");
         s.type = "text/javascript";
+        s.src = `https://im.zoho.com/api/v1/public/channel/${zohoAppID}/widget`;
+        s.onload = function (arg) {
+          console.error("Script loaded:", arg);
+        };
+        s.onerror = function (error) {
+          console.error("Script load error:", error);
+        };
+        document.getElementsByTagName("head")[0].appendChild(s);
+      }
 
-        // Set the nonce attribute, if needed
-        s.nonce = "{place_your_nonce_value_here}";
+      window.addEventListener("DOMContentLoaded", initialize);
 
-        // Defer the loading of the script to prevent it from blocking page rendering
-        s.defer = true;
-      })();
+      console.log("end ---- index2.html");
     </script>
   </body>
 </html>

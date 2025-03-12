@@ -1,1 +1,3 @@
 rootProject.name = 'desk_zoho_chat'
+include ':flutter_inappwebview'
+project(':flutter_inappwebview').projectDir = new File(rootProject.projectDir, '../.pub-cache/hosted/pub.dev/flutter_inappwebview-6.0.0/android')

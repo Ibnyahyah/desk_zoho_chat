@@ -9,7 +9,7 @@ Screenshots
 ## Getting Started
 copy the your appId from the generated code gotten from desk.zoho.com dashboard
 
-This plugin is depended on [InappWebView!](https://pub.dev/packages/flutter_inappwebview) so you'll need to set the necessary permissions 
+This plugin is depended on [InappWebView!](https://pub.dev/packages/flutter_inappwebview) so you'll need to set the necessary permissions
 
 For Android, in your Manifest.xml add :
 ```
@@ -46,11 +46,7 @@ Get Your AppID From the desk.zoho.com
 Assuming the widget code here is ** xxxxx **, copy it and use desk_desk_zoho_chat this way
 
 ```
-        DeskZohoChat(
-          zohoAppID: "xxxxx", //desk.zoho.com chat widget code
-          preloaderSize: 100.0, //preloader size
-          preloaderWidth: 3, //preloader border size
-          preloaderColorHexString: "#2196f3", //preloader color code
-        )
-
+  DeskZohoChat(
+    zohoAppID: "xxxxx", //desk.zoho.com chat AppID
+  )
 ```
