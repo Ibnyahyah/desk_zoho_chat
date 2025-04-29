@@ -1,6 +1,6 @@
 name: desk_zoho_chat
 description: A Flutter plugin to integrate Zoho Desk Support in your Flutter app. It provides an easy-to-use API for communicating with the Zoho Desk platform to provide in-app chat functionality for customer support.
-version: 1.0.1
+version: 1.0.2
 homepage: https://www.github.com/ibnyahyah/desk_zoho_chat
 
 environment:

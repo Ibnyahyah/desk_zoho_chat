@@ -27,12 +27,23 @@ apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 33
+    namespace = "com.whitecoode.desk_zoho_chat"
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
+
     defaultConfig {
         minSdkVersion 21
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
     }
 }
 
