@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'dart:io';
+import 'package:flutter/services.dart';
 
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
@@ -40,6 +41,17 @@ class _DeskZohoChatState extends State<DeskZohoChat> {
       clearCache: true,
       cacheEnabled: false,
       useOnLoadResource: true,
+      allowFileAccessFromFileURLs: true,
+      allowUniversalAccessFromFileURLs: true,
+    ),
+    android: AndroidInAppWebViewOptions(
+      useHybridComposition: true,
+      mixedContentMode: AndroidMixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
+      domStorageEnabled: true,
+      allowContentAccess: true,
+      allowFileAccess: true,
+      thirdPartyCookiesEnabled: true,
+      supportMultipleWindows: false,
     ),
     ios: IOSInAppWebViewOptions(
       allowsInlineMediaPlayback: true,
@@ -51,27 +63,43 @@ class _DeskZohoChatState extends State<DeskZohoChat> {
   bool showErrorPage = false;
   String errorMessage = '';
   bool startedServer = false;
+  String htmlContent = '';
 
-  void init() async {
+  Future<void> loadHtmlContent() async {
     try {
-      print("---- Start Server");
-      await localhostServer.start();
-      print("---- Done Start Server");
+      if (Platform.isAndroid) {
+        htmlContent = await rootBundle
+            .loadString('packages/desk_zoho_chat/assets/index.html');
+      } else {
+        htmlContent = await rootBundle
+            .loadString('packages/desk_zoho_chat/assets/index2.html');
+      }
       setState(() {
         startedServer = true;
       });
-      print("----- Done With Server");
     } catch (e) {
-      print("---- Error Server");
+      print("---- Error loading HTML");
       print(e);
-      print("----- Down With Error Server");
+      // Fallback to localhost server
+      try {
+        print("---- Start Server");
+        await localhostServer.start();
+        print("---- Done Start Server");
+        setState(() {
+          startedServer = true;
+        });
+        print("----- Done With Server");
+      } catch (serverError) {
+        print("---- Error Server");
+        print(serverError);
+        print("----- Down With Error Server");
+      }
     }
   }
 
   @override
   void initState() {
-    init();
-
+    loadHtmlContent();
     super.initState();
   }
 
@@ -145,16 +173,24 @@ class _DeskZohoChatState extends State<DeskZohoChat> {
                         child: InAppWebView(
                           key: webViewKey,
                           initialOptions: options,
-                          initialUrlRequest: URLRequest(
-                            url: Platform.isIOS
-                                ? WebUri.uri(Uri.parse(
-                                    "http://localhost:2021/packages/desk_zoho_chat/assets/index2.html"))
-                                : WebUri.uri(Uri.parse(
-                                    "http://localhost:2021/packages/desk_zoho_chat/assets/index.html")),
-                          ),
-                          // initialFile: Platform.isIOS
-                          //     ? "http://localhost:2021/packages/desk_zoho_chat/assets/index2.html"
-                          //     : "http://localhost:2021/packages/desk_zoho_chat/assets/index.html",
+                          initialUrlRequest: htmlContent.isEmpty
+                              ? URLRequest(
+                                  url: Platform.isIOS
+                                      ? WebUri.uri(Uri.parse(
+                                          "http://localhost:2021/packages/desk_zoho_chat/assets/index2.html"))
+                                      : WebUri.uri(Uri.parse(
+                                          "http://localhost:2021/packages/desk_zoho_chat/assets/index.html")),
+                                )
+                              : null,
+                          initialData: htmlContent.isNotEmpty
+                              ? InAppWebViewInitialData(
+                                  data: htmlContent,
+                                  baseUrl: WebUri.uri(
+                                      Uri.parse("https://static.zohocdn.com")),
+                                  mimeType: 'text/html',
+                                  encoding: 'utf-8',
+                                )
+                              : null,
                           initialUserScripts: UnmodifiableListView<UserScript>([
                             UserScript(
                               source: functionBody,
@@ -162,7 +198,6 @@ class _DeskZohoChatState extends State<DeskZohoChat> {
                                   UserScriptInjectionTime.AT_DOCUMENT_END,
                             ),
                           ]),
-
                           shouldOverrideUrlLoading:
                               (controller, navigationAction) async {
                             debugPrint("shouldOverrideUrlLoading");

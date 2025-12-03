@@ -14,3 +14,8 @@
 ## 1.0.2
 
 * Fixing compatibility warning on Android an IOS.
+
+
+## 1.0.3
+
+* Bug fixes.
